@@ -115,15 +115,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { store } from '.app/store';
-import { Provider } from 'react-redux';
+import { store } from './app/store';     // Add this line 
+import { Provider } from 'react-redux';  // Add this line 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store={store}>           {/* Add this line */}
       <App />
-    </Provider>
+    </Provider>                        {/* Add this line */}
   </React.StrictMode>
 );
 ```
@@ -132,8 +132,10 @@ root.render(
 
 A slice is where all of the action and reducer logic resides for each of our apps features.  Since we are building a counter feature for our app we will make a counter slice.  Each feature should have its own slice. For example: if our app had a post feature and a delete feature, we would make a slice for each. 
 
-In the `src` directory create another directory called `features` and within `features` create another directory called `counter`
- 
+In the `src` directory create another directory called `features` and within `features` create another directory called `counter`.  Create a new file named `counterSlice.js` with in this folder.
+
+![folderTree2](./public/folderTree2.png)
+
 
 ## Create React App + Redux Template
 
