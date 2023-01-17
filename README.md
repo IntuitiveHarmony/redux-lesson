@@ -39,7 +39,7 @@ This is where the global state resides.
 
 ### <u>Actions</u>
 
-Actions are essentially an object that describes something to happen and what it is happening to.  It will contain a name that describes the action and the domain (within your app) it shall take place.  It will also contain a payload, which is essentially desribes the "Item" around which the action takes place.
+Actions are essentially an object that describes the "where" and the "what" that will take place.  Since we can have many pieces of state in the store it will contain a name that describes the domain it shall take place (where).  It will also contain a payload (what).
 
 ### <u>Reducers</u>
 
@@ -104,10 +104,14 @@ export const store = configureStore({
     }
 })
 ```
+<i>store.js</i>
+<hr />
 
 ## Provide the Store
 
-Open `index.js` we are going to add some code to this file in order to make our store acesable to the app. Wee need to import the `{ store }` we just created. We wil also import the `{ Provider }` hook from `react-redux`.  Once that is complete, wrap the `<App />` with `<Provider>` and pass our `store` in as a prop.  It should look something like this:
+Open `index.js` we are going to add some code to this file in order to make our store acesable to the app. We need to: 
+1) Import the `{ store }` we just created. We wil also import the `{ Provider }` hook from `react-redux`.
+2) Wrap the `<App />` with `<Provider>` and pass our `store` in as a prop.  It should look something like this:
 
 ```javascript
 import React from 'react';
@@ -115,27 +119,105 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { store } from './app/store';     // Add this line 
-import { Provider } from 'react-redux';  // Add this line 
+import { store } from './app/store';     // 1. Add this line 
+import { Provider } from 'react-redux';  // 1. Add this line 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>           {/* Add this line */}
+    <Provider store={store}>           {/* 2. Add this line */}
       <App />
-    </Provider>                        {/* Add this line */}
+    </Provider>                        {/* 2. Add this line */}
   </React.StrictMode>
 );
 ```
+<i>index.js</i>
+<hr />
 
 ## Create the Counter Slice
 
-A slice is where all of the action and reducer logic resides for each of our apps features.  Since we are building a counter feature for our app we will make a counter slice.  Each feature should have its own slice. For example: if our app had a post feature and a delete feature, we would make a slice for each. 
+A slice is where all of the action and reducer logic resides for each of the features for our app.  Since we are building a counter feature for our app we will make a counter slice.  Each feature should have its own slice. For example: if our app had a post feature and a delete feature, we would make a slice for each. 
 
 In the `src` directory create another directory called `features` and within `features` create another directory called `counter`.  Create a new file named `counterSlice.js` with in this folder.
 
 ![folderTree2](./public/folderTree2.png)
 
+Within `counterSlice.js` we will define the increment and decrement logic for our counter.  
+1) Import the `{ createSlice }` hook. 
+2) Create the initial state of the counter within our store.
+3) Using the `counterSlice` hook, create the slice object, we will put in a  name, the `initialState` we just created and the `reducers` object.
+4) Create the action logic for the increment and the decrement within the reducer object.  Each will be anonymous functions that use state as a parameter. We can write logic that mutates the state because Redux uses a library called [immer](https://immerjs.github.io/immer/) 
+5) Export both actions seperately and the reducer itself.  The dispatcher will need to use the actions and the store will need to use the reducer. 
+
+```javascript
+// Step 1.
+import { createSlice } from '@reduxjs/toolkit'   
+
+ // Step 2.
+const initialState = {                          
+  value: 0,
+}
+
+// Step 3.
+export const counterSlice = createSlice({       
+  name: 'counter',
+  initialState,
+  reducers: {
+    //Step 4.
+    increment: (state) => {
+      state.value += 1
+    },
+    decrement: (state) => {
+      state.value -= 1
+    },
+  },
+})
+
+// Step 5.
+export const { increment, decrement } = counterSlice.actions
+
+export default counterSlice.reducer
+```
+<i>counterSlice.js</i>
+<hr />
+
+## Add the Reducer to the Store
+
+Within `store.js`
+1) Import `counterReducer` 
+2) Add it to the reducer object we created earlier.
+
+```javascript
+import { configureStore } from "@reduxjs/toolkit"
+import counterReducer from '../features/counter/counterSlice'  // 1. Add this line 
+
+export const store = configureStore({
+    reducer: {
+        counter: counterReducer,  // 2. Add this line 
+    }
+})
+```
+<i>store.js</i>
+<hr />
+
+Once this is done we should be able to see the `value` state in our store using the redux dev tools in the browser.
+
+In the terminal run:
+```
+npm start
+```
+
+Once the React app is running in the browser open the Redux dev tools.  If you cannot locate the Redux dev tools, they may be in the drop down menu (press the >> button)
+
+![reduxDevTool1](./public/reduxDevTool1.png)
+
+## Create the Counter Component
+
+Within the `/features/counter` directory create a file named `Counter.js`.  This is where we will:
+1) Create the user interface for counter (buttons).
+2) Import the `increment` and   decrement` actions we made in the `counterSlice`
+3) Use the `useDispatch` hook in order to put our dispatchers to work. 
+4) Use the `useSelector` hook to display the current state of `value` from within the store.
 
 ## Create React App + Redux Template
 
