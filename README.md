@@ -66,7 +66,7 @@ npx create-react-app redux-toolkit-counter
 ```
 ## Install the Redux and Redux Toolkit Packages
 
-CD into the `redux-toolkit-counter` and in the terminal run: 
+CD into the `redux-toolkit-counter` directory and in the terminal run: 
 ```
 npm i @reduxjs/toolkit react-redux
 ```
