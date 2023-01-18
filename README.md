@@ -103,22 +103,22 @@ Open `index.js` we are going to add some code to this file in order to make our 
 2) Wrap the `<App />` with `<Provider>` and pass our `store` in as a prop.  It should look something like this:
 
 ```javascript
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { store } from './app/store';     // 1. Add this line 
-import { Provider } from 'react-redux';  // 1. Add this line 
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './index.css'
+import App from './App'
+import reportWebVitals from './reportWebVitals'
+import { store } from './app/store'     // 1. Add this line 
+import { Provider } from 'react-redux'  // 1. Add this line 
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <Provider store={store}>           {/* 2. Add this line */}
       <App />
     </Provider>                        {/* 2. Add this line */}
   </React.StrictMode>
-);
+)
 ```
 <i>index.js</i>
 <hr />
@@ -213,8 +213,8 @@ This is where we will:
 4) Create the user interface for counter. We will call the dispatchers using an anonymous function in the `onClick` of the `<button>`.
 
 ```javascript
-import { useSelector, useDispatch } from "react-redux"; // Step 1.
-import { increment, decrement } from "./counterSlice";  // Step 3.
+import { useSelector, useDispatch } from "react-redux" // Step 1.
+import { increment, decrement } from "./counterSlice"  // Step 3.
 
 const Counter = () => {
     // Step 1.
@@ -244,8 +244,8 @@ export default Counter
 Inside the `App.js` file import the `Counter.js` component.  Remove all of the pre-populated code within the return and and replace it with the JSX `<Counter />` element. 
 
 ```javascript
-import './App.css';
-import Counter from './features/counter/Counter';
+import './App.css'
+import Counter from './features/counter/Counter'
 
 function App() {
   return (
